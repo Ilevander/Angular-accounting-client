@@ -32,7 +32,10 @@ export class AuthenticationService {
   public saveToken(token: string):void {
     this.token = token;
     localStorage.setItem('token', token);
+  }
 
+  public addUserToLocalCache(user: User):void {
+    localStorage.setItem('user',JSON.stringify(user));
 
   }
 }
