@@ -36,6 +36,10 @@ export class AuthenticationService {
 
   public addUserToLocalCache(user: User):void {
     localStorage.setItem('user',JSON.stringify(user));
+  }
 
+  public getUserFromLocalCache(): User | null {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
   }
 }
