@@ -42,4 +42,9 @@ export class AuthenticationService {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
+
+  public loadToken(): void {
+    this.token = localStorage.getItem('token');
+  }
+
 }
