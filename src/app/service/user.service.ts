@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {environment} from '../../environments/environment';
-import {HttpClient, HttpErrorResponse, HttpEvent, HttpResponse} from '@angular/common/http';
-import {Observable} from "rxjs";
-import {User} from "../model/user";
-import {readBooleanType} from "@angular/compiler-cli/src/ngtsc/metadata/src/util";
+import { HttpClient, HttpResponse, HttpErrorResponse, HttpEvent } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
+import { User } from '../model/user';
+import { CustomHttpRespone } from '../model/custom-http-response';
 
 @Injectable({
   providedIn: 'root'
@@ -11,33 +11,34 @@ import {readBooleanType} from "@angular/compiler-cli/src/ngtsc/metadata/src/util
 export class UserService {
 
   private host = environment.apiUrl;
+
   constructor(private http: HttpClient) { }
 
   public getUsers(): Observable<User[] | HttpErrorResponse> {
       return this.http.get<User[]>(`${this.host}/user/list`);
   }
 
-  public addUsers(formData: FormData): Observable<User | HttpErrorResponse> {
+  public addUser(formData: FormData): Observable<User> {
     return this.http.post<User>(`${this.host}/user/add`, formData);
   }
 
-  public updateUser(formData: FormData): Observable<User | HttpErrorResponse> {
+  public updateUser(formData: FormData): Observable<User> {
     return this.http.post<User>(`${this.host}/user/update`, formData);
   }
 
-  public resetPassword(email: string): Observable<any | HttpErrorResponse> {
-    return this.http.get<User>(`${this.host}/user/resetpassword/${email}`);
+  public resetPassword(email: string): Observable<CustomHttpRespone> {
+    return this.http.get<CustomHttpRespone>(`${this.host}/user/resetpassword/${email}`);
   }
 
-  public updateProfileImage(formData: FormData): Observable<HttpEvent<User> | HttpErrorResponse> {
-    return this.http.post<User>(`${this.host}/user/updateProfileImage/` , formData ,
+  public updateProfileImage(formData: FormData): Observable<HttpEvent<User>> {
+    return this.http.post<User>(`${this.host}/user/updateProfileImage`, formData,
       {reportProgress: true,
-              observe: 'events'
+        observe: 'events'
       });
   }
 
-  public deleteUser(userId: number): Observable<any | HttpErrorResponse> {
-    return this.http.delete<any>(`${this.host}/user/delete/${userId}`);
+  public deleteUser(username: string): Observable<CustomHttpRespone> {
+    return this.http.delete<CustomHttpRespone>(`${this.host}/user/delete/${username}`);
   }
 
   public addUsersToLocalCache(user: User[]): void {
@@ -52,12 +53,18 @@ export class UserService {
     return null;
   }
 
-  public createUserFormData(): User[] | null {
-    const users = localStorage.getItem('users');
-    if (users) {
-      return JSON.parse(users) as User[];
-    }
-    return null;
+  public createUserFormDate(loggedInUsername: string, user: User, profileImage: File): FormData {
+    const formData = new FormData();
+    formData.append('currentUsername', loggedInUsername);
+    formData.append('firstName', user.firstName);
+    formData.append('lastName', user.lastName);
+    formData.append('username', user.username);
+    formData.append('email', user.email);
+    formData.append('role', user.role);
+    formData.append('profileImage', profileImage);
+    formData.append('isActive', JSON.stringify(user.active));
+    formData.append('isNonLocked', JSON.stringify(user.notLocked));
+    return formData;
   }
 
 
