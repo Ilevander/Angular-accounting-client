@@ -3,6 +3,7 @@ import {environment} from '../../environments/environment';
 import {HttpClient, HttpErrorResponse, HttpEvent, HttpResponse} from '@angular/common/http';
 import {Observable} from "rxjs";
 import {User} from "../model/user";
+import {readBooleanType} from "@angular/compiler-cli/src/ngtsc/metadata/src/util";
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,28 @@ export class UserService {
   public deleteUser(userId: number): Observable<any | HttpErrorResponse> {
     return this.http.delete<any>(`${this.host}/user/delete/${userId}`);
   }
+
+  public addUsersToLocalCache(user: User[]): void {
+     localStorage.setItem('users', JSON.stringify(user));
+  }
+
+  public getUsersFromLocalCache(): User[] | null {
+    const users = localStorage.getItem('users');
+    if (users) {
+      return JSON.parse(users) as User[];
+    }
+    return null;
+  }
+
+  public createUserFormData(): User[] | null {
+    const users = localStorage.getItem('users');
+    if (users) {
+      return JSON.parse(users) as User[];
+    }
+    return null;
+  }
+
+
 
 
 
