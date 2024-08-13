@@ -6,14 +6,24 @@ import {AuthenticationService} from "./service/authentication.service";
 import {UserService} from "./service/user.service";
 import {AuthInterceptor} from "./interceptor/auth.interceptor";
 import {AuthenticationGuard} from "./guard/authentication.guard";
+import {AppComponent} from "./app.component";
+import {LoginComponent} from "./login/login.component";
+import {UserComponent} from "./user/user.component";
+import {RegisterComponent} from "./register/register.component";
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    UserComponent,
+    RegisterComponent
+
+  ],
   imports: [
     CommonModule,
     HttpClientModule,
-    BrowserModule,
+    BrowserModule
   ],
   providers: [
     AuthenticationGuard,
