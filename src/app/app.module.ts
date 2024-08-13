@@ -5,6 +5,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {AuthenticationService} from "./service/authentication.service";
 import {UserService} from "./service/user.service";
 import {AuthInterceptor} from "./interceptor/auth.interceptor";
+import {AuthenticationGuard} from "./guard/authentication.guard";
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import {AuthInterceptor} from "./interceptor/auth.interceptor";
     BrowserModule,
   ],
   providers: [
+    AuthenticationGuard,
     AuthenticationService,
     UserService,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor , multi: true},//multi instence of injection into the interceptor
