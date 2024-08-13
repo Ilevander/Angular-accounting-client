@@ -10,6 +10,7 @@ import {AppComponent} from "./app.component";
 import {LoginComponent} from "./login/login.component";
 import {UserComponent} from "./user/user.component";
 import {RegisterComponent} from "./register/register.component";
+import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
@@ -23,13 +24,14 @@ import {RegisterComponent} from "./register/register.component";
   imports: [
     CommonModule,
     HttpClientModule,
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
   ],
   providers: [
     AuthenticationGuard,
     AuthenticationService,
     UserService,
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor , multi: true},//multi instence of injection into the interceptor
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor , multi: true},//multi instance of injection into the interceptor
   ],
 })
 
