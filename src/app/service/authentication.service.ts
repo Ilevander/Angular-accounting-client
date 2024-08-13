@@ -8,7 +8,7 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 @Injectable({providedIn: 'root'})
 export class AuthenticationService {
 
-  private host = environment.apiUrl;
+  public host = environment.apiUrl;
   private token: string | null = null;
   private loggedInUsername: string | null = null;
   private jwtHelper = new JwtHelperService();
@@ -58,18 +58,19 @@ export class AuthenticationService {
 
   public isLoggedIn(): boolean {
     this.loadToken();
-    if(this.token != null && this.token !== '') {
-       if(this.jwtHelper.decodeToken(this.token).sub != null || '') {
-           if(!this.jwtHelper.isTokenExpired(this.token)) {
-             this.loggedInUsername = this.jwtHelper.decodeToken(this.token).sub;
-             return true;
-           }
-       }
-    }else{
-      this.logout();
-      return false;
+    if (this.token != null && this.token !== '') {
+      const decodedToken = this.jwtHelper.decodeToken(this.token);
+      if (decodedToken.sub != null && decodedToken.sub !== '') {
+        if (!this.jwtHelper.isTokenExpired(this.token)) {
+          this.loggedInUsername = decodedToken.sub;
+          return true;
+        }
+      }
     }
+    this.logout();
+    return false;
   }
+
 
 
 
