@@ -1,44 +1,37 @@
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {BrowserModule} from "@angular/platform-browser";
-import {AuthenticationService} from "./service/authentication.service";
-import {UserService} from "./service/user.service";
-import {AuthInterceptor} from "./interceptor/auth.interceptor";
-import {AuthenticationGuard} from "./guard/authentication.guard";
-import {AppComponent} from "./app.component";
-import {LoginComponent} from "./login/login.component";
-import {UserComponent} from "./user/user.component";
-import {RegisterComponent} from "./register/register.component";
-import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { AuthenticationService } from './service/authentication.service';
+import { UserService } from './service/user.service';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { AuthenticationGuard } from './guard/authentication.guard';
+
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    UserComponent,
-    RegisterComponent
-
-  ],
   imports: [
-    CommonModule,
-    HttpClientModule,
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    LoginComponent,
+    RegisterComponent,
+    UserComponent,
   ],
   providers: [
     AuthenticationGuard,
     AuthenticationService,
     UserService,
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor , multi: true},//multi instance of injection into the interceptor
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
+  bootstrap: [AppComponent]
 })
-
-export class AppModule { }
-
-
-
-
-
-
+export class AppModule {
+  title = 'my-app';
+}
